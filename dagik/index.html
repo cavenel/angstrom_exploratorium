@@ -1,0 +1,113 @@
+<!doctype html>
+<html style="background:black;">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dagik Earth</title>
+
+    <link rel="stylesheet" type="text/css" href="data/js/dow.css?tmp=123">
+    <script type="text/javascript" src="data/js/three.min.js?tmp=123"></script>
+    <script type="text/javascript" src="data/js/dow.all.js?tmp=123"></script>
+
+    <style>
+      html { margin: 0; overflow: hidden; height: 100%; }
+      body { margin: 0; overflow: hidden; height: 100%; background-color: #000000; }
+      #dow_console {display: none !important;}
+      body {
+        opacity: 0;
+        transition: opacity 2s;
+      }
+      body.show {
+        opacity:1;
+        transition: opacity 0s;
+      }
+
+    </style>
+</head>
+<body class="show" id="body">
+    <div id="webgl" style="width: 100%; height: 100%; max-height: 75vw;"></div>
+    <script language="javascript">
+      var dow = new DOW.Application( 'webgl', {
+        icondir: 'data/js/icons',
+        configs: ['data/conf/init_conf.txt', 'data/conf/conf.txt']
+      });
+      DOW.KEY_ACTION = {
+        'UP_ARROW': 'up_arrow_key',
+        'DOWN_ARROW': 'down_arrow_key',
+        'LEFT_ARROW': 'left_arrow_key',
+        'RIGHT_ARROW': 'right_arrow_key', 
+      }
+      DOW.ICONS = {}
+      // Load scenes from data/conf/scenes.txt
+      var scene = [];
+      var scene_file = new XMLHttpRequest();
+      scene_file.open("GET", "data/conf/scenes.txt", false);
+      scene_file.onreadystatechange = function () {
+        if (scene_file.readyState === 4) {
+          if (scene_file.status === 200 || scene_file.status == 0) {
+            var allText = scene_file.responseText;
+            scene = allText.split("\n");
+            // tream all the scenes
+            scene = scene.map(function (x) {
+              return x.trim();
+            });
+            setTimeout(
+              () => dow.Run({configs: ['data/conf/init_conf.txt', 'data/conf/conf.txt', 'data/conf/'+scene[0]+'.txt', ]}), 
+              500
+            );
+          }
+        }
+      }
+      scene_file.send(null);
+
+      //dow.Run();
+      // set timeout_timestamp to now
+      var timeout_timestamp = Math.floor(Date.now() / 1000);
+      var sleep_mode = false;
+      var last_scene = 0;
+      // for i in range 0-10:
+      for (let i = 0; i < 10; i++) {
+        // dow.gui._call_command("set_image," + i)
+        dow["command_set_scene_" + i] = function () {
+            if (sleep_mode) {
+              sleep_mode = false;
+              document.getElementById("body").classList.add('show');
+            }
+            last_scene = i;
+            dow.Run({configs: ['data/conf/init_conf.txt', 'data/conf/conf.txt', 'data/conf/'+scene[i]+'.txt', ]})
+            timeout_timestamp = Math.floor(Date.now() / 1000);
+        }
+        DOW.KEY_ACTION[i] = "set_scene_" + i
+      }
+      
+      // Get requestPointerLock on any key press, on the html body
+        document.body.addEventListener('keydown', function (event) {
+            document.body.requestPointerLock();
+        });
+        // set mouse move
+        document.addEventListener('mousemove', function (event) {
+            timeout_timestamp = Math.floor(Date.now() / 1000);
+            if (sleep_mode) {
+              sleep_mode = false;
+              document.getElementById("body").classList.add('show');              
+            }
+            if (document.pointerLockElement === document.body) {
+                // get delta
+                var dx = event.movementX || event.mozMovementX || event.webkitMovementX || 0;
+                var dy = event.movementY || event.mozMovementY || event.webkitMovementY || 0;
+                dow._manual_rotation  = new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(dy, dx, 0),0.01);
+            }
+        });
+        setInterval(() => {
+          let now = Math.floor(Date.now() / 1000);
+          if (now - timeout_timestamp > 5 && !sleep_mode) {
+            // set opacity of #body to 0
+            document.getElementById("body").classList.remove('show');
+            timeout_timestamp = Math.floor(Date.now() / 1000);
+            sleep_mode = true;
+          }
+        }, 1000);
+    </script>
+
+</body>
+</html>

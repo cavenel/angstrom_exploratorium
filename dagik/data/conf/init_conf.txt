@@ -1,0 +1,100 @@
+#WindowSizeXY 1024 768
+#WindowPositionXY 0 0
+#FullScreen 0
+#InvisibleCursor 0
+#ClickLock 0
+#NoMouseDragRotation 0
+#DragSpeed 1. 
+#PresentaionRemoteMode 0 : [ For Presentation Remote Controller: '->'key = a, '<-'key = b ]
+#InertiaOfRotation 0.02 0.01 0.01 0. : [Start_criteria, Stop_criteria, Speed of rotation, Damping rate (1= little damping, 0 = no inertia rotation)]
+#NumberOfEarth 1
+#Scale 1.9
+#EarthXY 0.3 0.0
+#ScreenScaleXY 4.3 -2.6 1.9
+#ScreenFront 1 :[0:  Caption is behind the Earth. 1: Caption is in front of the Earth.]
+#ScreenBGTransparency 255
+#TimebarScaleXY .2 -1.6 -1.65
+#Latitude 0.0  :[-90,90]
+#Longitude 135.0 :[-180,180]
+#Animation 1 :[0: stop, 1: play, -1: reverse play]
+#AnimationSpeed 8 :[-30,30]
+#StopAt1stMap 1.0
+#StopAtFinalMap 1.0
+#Repeat 1 
+#Spin 0
+#SpinSpeed 50 :[-200,200]
+#SpinIntervalSecond 0.005 :[Smaller number gets faster spin.]
+#Perspective 0:[0: orthogonal, 1: perspective]
+#EyePosition 80.0
+#NumberOfTextures 1  :[ 1 or 2 ]
+#SecondTexture_at_startup 0
+#TextureName data/images/map/black_
+#ScreenName data/images/screen/screen_
+#SecondTextureName data/images/map_second/map_
+#SecondScreenName data/images/screen_second/screen_
+#TextureSuffix jpg
+#SecondTextureSuffix jpg
+#ScreenSuffix jpg
+#SecondScreenSuffix jpg    
+#TextureStart 0
+#TextureEnd 9999
+#MeridianLatitude 0 12 6 3. 5.
+#ColorMeridianLatitude 0.7 0.7 0.7 0.7  0.8 0.2 0.2 0.7
+#PaletteScaleXY 0.1 2.6 0.51           ###Color palette for drawing: scale, x, y 
+#LineThicknessColor 2.5 1. 0.373 0.125 1.0 # Drawing line thickness, R, G, B, alpha
+#ArrowsName data/plot/arrows/arrows_
+#ArrowsSuffix csv
+#ArrowsOn 1
+#ArrowsInitDisplay 1
+#LinesName data/plot/lines/lines_
+#LinesSuffix csv
+#LinesOn 1
+#LinesInitDisplay 1
+#PointsName data/plot/points/points_
+#PointsSuffix csv
+#PointsOn 1
+#PointsInitDisplay 1
+#Icon 27                                      ### Full Icons
+#IconScaleXY 0.2 2.4 -1.5		       ###Play/Stop
+#Icon2ScaleXY 0.2 1.9 -1.75	        ###Initial
+#Icon3ScaleXY 0.2 2.15 -1.5		     ###Reverse Play/Stop
+#Icon4ScaleXY 0.2 2.4 1.3		       ###Spin/Stop
+#Icon5ScaleXY 0.2 2.4 -1.75		      ###1step Forward
+#Icon27ScaleXY 0.2 1.9   -1.5		  ###1step Forward & Change Layer
+#Icon6ScaleXY 0.2 2.15 -1.75		 ###1step Backward
+#Icon7ScaleXY 0.2 2.4 1.05		       ###Latitude/Longitude Lines
+#Icon8ScaleXY 0.2 2.4 1.55		       ###Zoom in
+#Icon9ScaleXY 0.2 2.15 1.55		      ###Zoom out
+#Icon10ScaleXY 0.2 2.15 1.3		      ###North upward
+#Icon11ScaleXY 0.2 2.4 -1.25	      ### Fast (Play speed)
+#Icon12ScaleXY 0.2 2.15 -1.25	      ### Slow (Play speed)
+#Icon13ScaleXY 0.2 2.4 1.95		        ###Quit
+#Icon14ScaleXY 0.2 2.15 1.95		  ###Full Screen
+#Icon15ScaleXY 0.18 -2.20 1.95		  ###Logo Small
+#Icon16ScaleXY 0.18 -1.995 1.95		  ###Logo Large
+#Icon17ScaleXY 0.2 -2.65 1.85		  ###Logo Left
+#Icon18ScaleXY 0.2 -2.45 1.85		  ###Logo Right
+#Icon19ScaleXY 0.2 -2.55  1.65		  ###Logo Down
+#Icon20ScaleXY 0.2 -2.55  2.05		  ###Logo Up
+#Icon21ScaleXY 0.2 -0.55  -1.75		  ###Switch Layers
+#Icon22ScaleXY 0.2 -1.25  -1.75		  ###Screen Show/Hide
+#Icon23ScaleXY 0.2 -1.5  -1.75		  ###Icon Show/Hide
+#Icon24ScaleXY 0.2 2.4  -0.5	        ###Icon Drawing mode / Rotation mode 
+#Icon25ScaleXY 0.2 2.4   -0.75		  ###Icon Erase drawings
+#Icon26ScaleXY 0.2 2.4   -1.		   ###Icon Save drawings
+#Icon27ScaleXY 0. 0. 0. 		  ###1step Forward & Change Layer
+#Icon14ScaleXY 0. 0. 0. 		  ###Full Screen
+#Icon15ScaleXY 0. 0. 0. 		  ###Logo Small
+#Icon16ScaleXY 0. 0. 0. 		  ###Logo Large
+#Icon17ScaleXY 0. 0. 0. 		  ###Logo Left
+#Icon18ScaleXY 0. 0. 0. 		  ###Logo Right
+#Icon19ScaleXY 0. 0. 0. 		  ###Logo Down
+#Icon20ScaleXY 0. 0. 0. 		  ###Logo Up
+#TextureName2 data/images/map/map_
+#ScreenName2 data/images/screen/screen_
+#SecondTextureName2 data/images/map_second/map_
+#SecondScreenName2 data/images/screen_second/screen_
+#TextureSuffix2 jpg
+#SecondTextureSuffix2 jpg
+#ScreenSuffix2 jpg
+#SecondScreenSuffix2 jpg    

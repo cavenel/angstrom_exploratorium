@@ -1,0 +1,8 @@
+#WindowTitle  Dagik_planets
+#Latitude 0.0  :[-90,90]
+#Longitude 0.0 :[-180,180]
+#Animation 0 :[0: stop, 1: play, -1: reverse play]
+#AnimationSpeed 3 :[-30,30]
+#Icon 0                                             ### For no Icons
+#ScreenOn 0
+#EarthXY 0.0 0.0

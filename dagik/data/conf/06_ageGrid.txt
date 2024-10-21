@@ -1,0 +1,136 @@
+#WindowTitle  Dagik_AgeGrid
+===================================================
+Configuration file for Chikyu Kuru Kuru, overriding "init_conf.txt"
+ 	Same configurations can be used as "init_conf.txt"
+
+===================================================
+----- Initial view point ------
+#Latitude -45.0  :[-90,90]
+#Longitude 0.0 :[-180,180]
+!#Perspective 0:[0: orthogonal, 1: perspective]
+!#EyePosition 80.0
+
+===================================================
+----- Initial setup for animation and spin ------
+#Animation 1 :[0: stop, 1: play, -1: reverse play]
+#AnimationSpeed 7 :[-30,30]
+#StopAt1stMap 2.
+#StopAtFinalMap 5.
+!#Repeat 1 
+!#Spin 0
+!#SpinSpeed 20 :[-200,200]
+!#FullScreen 0
+
+===================================================
+----- Size and Locations of Screen (caption) images and Timebar ------
+!#WindowSizeXY 800 600
+!#Scale 1.9
+--- Earth Right, Caption Left ----
+!#EarthXY 0.3 0.0
+!#NumberOfEarth 1
+!#ScreenScaleXY 4.3 -2.6 1.9
+!#ScreenFront 0  :[0:  Caption is behind the Earth. 1: Caption is in front of the Earth.]
+!#TimebarScaleXY .2 -1.6 -1.65
+
+--- Earth Left, Caption Right and small----
+!#EarthXY -0.35 0.0
+!#Earth2XY 0.0 0.0	### Relative Location of Earth 2
+!#ScreenScaleXY 3.2 1.28 1.5 
+!#ScreenFront 0  :[0:  Caption is behind the Earth. 1: Caption is in front of the Earth.]
+!#TimebarScaleXY .18 1.5 -1.65
+
+--- Earth Center, Caption on the Earth ----
+!#EarthXY 0.0 0.0
+!#NumberOfEarth 1
+!#ScreenScaleXY 4.3 -0.6 1.9
+!#ScreenFront 1  :[0:  Caption is behind the Earth. 1: Caption is in front of the Earth.]
+!#TimebarScaleXY .2 -2.5 -1.65
+
+----- One Earth or Two Earths ------
+--- for 1 Earth ---
+!#NumberOfEarth 1
+!#TextureOfEarth2 0
+
+--- for 2 Earth - 3D  --
+!#NumberOfEarth 2
+!#TextureOfEarth2 0
+!#EarthRotationSynch 1  ### Rotation Sync
+!#EarthSizeSynch 1    ###  Size sync
+!#Earth2AngleAxisXY -10 0.0 1.0 ### Angle between two Earths.
+
+--- for 2 Earth - Dual Projector  --
+!#NumberOfEarth 2
+!#TextureOfEarth2 0
+!#EarthRotationSynch 1  ### Rotation Sync
+!#EarthSizeSynch 1    ### Size sync
+!#Earth2AngleAxisXY -150 0.0 1.0 ### Angle between two Earths.
+
+--- for 2 Earth Normal & Zoom In---
+!#NumberOfEarth 2
+!#TextureOfEarth2 0
+!#EarthRotationSynch 1  ### Rotation Sync
+!#EarthSizeSynch 0    ### Size sync
+!#Scale2 6.0 ### Scale if size is not sync.
+!#Earth2AngleAxisXY 0.0 0.0 1.0  ### Angle between two Earths.
+
+--- for 2 Earth & 2 Textures Sync for 2 parameters ---
+!#NumberOfEarth 2
+!#TextureOfEarth2 1
+!#EarthRotationSynch 1  ### Rotation Sync
+!#EarthSizeSynch 1    ### Size sync
+!#Earth2AngleAxisXY 0.0 0.0 1.0 ### Angle between two Earths.
+
+--- for 2 Earth & 2 Textures No Sync (only Time Sync) for 2 planets/moons  ---
+!#NumberOfEarth 2
+!#TextureOfEarth2 1
+!#EarthRotationSynch 0  ### Rotation Sync
+!#Latitude2 0.0  :[-90,90] ### Initial coordinate if rotation is not sync.
+!#Longitude2 0.0 :[-180,180] ### Initial coordinate if rotation is not sync.
+!#EarthSizeSynch 0    ### Size sync
+!#Scale2 1.9 	### Scale if size is not sync.
+
+===================================================
+----- GUI ------
+!#InvisibleCursor 0
+
+!#Icon 0                                             ### For no Icons
+!#Icon 13                                         ### Without Fullscreen
+!#Icon 14                                         ### Full Icons
+
+!#IconScaleXY 0.2 2.4 -1.5		       ###Play/Stop
+!#Icon2ScaleXY 0.2 1.9 -1.75	        ###Initial
+!#Icon3ScaleXY 0.2 2.15 -1.5		     ###Reverse Play/Stop
+!#Icon4ScaleXY 0.2 2.4 1.3		       ###Spin/Stop
+!#Icon5ScaleXY 0.2 2.4 -1.75		      ###1step Forward
+!#Icon6ScaleXY 0.2 2.15 -1.75		 ###1step Backward
+!#Icon7ScaleXY 0.2 2.4 1.05		       ###Latitude/Longitude Lines
+!#Icon8ScaleXY 0.2 2.4 1.55		       ###Zoom in
+!#Icon9ScaleXY 0.2 2.15 1.55		      ###Zoom out
+!#Icon10ScaleXY 0.2 2.15 1.3		      ###North upward
+!#Icon11ScaleXY 0.2 2.4 -1.25	      ### Fast (Play speed)
+!#Icon12ScaleXY 0.2 2.15 -1.25	      ### Slow (Play speed)
+!#Icon13ScaleXY 0.2 2.4 1.95		        ###Quit
+!#Icon14ScaleXY 0.2 2.15 1.95		  ###Full Screen
+
+===================================================
+----- GRID: Latitude & Longitude lines ------
+!#MeridianLatitude 0 12 6 3. 5.
+!#ColorMeridianLatitude 0. 0. 0. 0.3  0.8 0.2 0.2 0.7
+
+===================================================
+--- Window 1 ---
+#TextureName data/images_agegrid/map/map_
+#ScreenName data/images_agegrid/screen-english/screen_
+!#SecondTextureName data/images/map_second-english/map_
+!#SecondScreenName data/images/screen_second-english/screen_
+
+--- Window 2 ---
+!#TextureName2 data/images/map-english/map_
+!#ScreenName2 data/images/screen-english/screen_
+!#SecondTextureName2 data/images/map_second-english/map_
+!#SecondScreenName2 data/images/screen_second-english/screen_  
+----------------------	
+===================================================
+
+#TextureStart 0
+#TextureEnd 28
