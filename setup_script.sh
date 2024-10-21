@@ -9,6 +9,19 @@ rm -f angstrom_exploratorium
 git clone https://github.com/cavenel/angstrom_exploratorium
 cd angstrom_exploratorium
 
+# Install dependencies
+
+apt install python3-pip libhidapi-libusb0 libxcb-xinerama0
+
+echo "Adding udev rules and reloading"
+tee /etc/udev/rules.d/70-streamdeck.rules << EOF
+SUBSYSTEM=="usb", ATTRS{idVendor}=="0fd9", TAG+="uaccess"
+EOF
+udevadm trigger
+
+# Install streamdeck with pip
+pip install streamdeck
+
 # Add "xserver-command=X -nocursor" to /usr/share/lightdm/lightdm.conf.d/50-xserver-command.conf
 echo "xserver-command=X -nocursor" >> /usr/share/lightdm/lightdm.conf.d/50-xserver-command.conf
 
@@ -22,9 +35,6 @@ cp splash.png /boot/
 # Copy streamdeck_service.py to /home/pi/
 cp streamdeck_service.py /home/pi/
 cp -r streamdeck_assets /home/pi/
-
-# Install streamdeck with pip
-pip install streamdeck
 
 # Add streamdeck_service.py as a service on boot
 cp streamdeck.service /etc/systemd/system/
