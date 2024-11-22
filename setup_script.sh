@@ -11,7 +11,7 @@ cd angstrom_exploratorium
 
 # Install dependencies
 
-apt install python3-pip libhidapi-libusb0 libxcb-xinerama0
+apt install python3-pip libhidapi-libusb0 libxcb-xinerama0 xautomation
 
 echo "Adding udev rules and reloading"
 tee /etc/udev/rules.d/70-streamdeck.rules << EOF
@@ -20,7 +20,7 @@ EOF
 udevadm trigger
 
 # Install streamdeck with pip
-pip install streamdeck
+pip install streamdeck  --break-system-packages --user
 
 # Add "xserver-command=X -nocursor" to /usr/share/lightdm/lightdm.conf.d/50-xserver-command.conf
 echo "xserver-command=X -nocursor" >> /usr/share/lightdm/lightdm.conf.d/50-xserver-command.conf
@@ -32,14 +32,9 @@ cp -r ./dagik /var/www/html/
 cp fullpageos.txt /boot/
 cp splash.png /boot/
 
-# Copy streamdeck_service.py to /home/pi/
-cp streamdeck_service.py /home/pi/
-cp -r streamdeck_assets /home/pi/
-
 # Add streamdeck_service.py as a service on boot
-cp streamdeck.service /etc/systemd/system/
-chmod 644 /lib/systemd/system/streamdeck.service
-chmod +x /home/pi/streamdeck_service.py
+cp streamdeck_service.service /etc/systemd/system/
+chmod 644 /etc/systemd/system/streamdeck_service.service
 systemctl daemon-reload
-systemctl enable streamdeck.service
-systemctl start streamdeck.service
+systemctl enable streamdeck_service.service
+systemctl start streamdeck_service.service

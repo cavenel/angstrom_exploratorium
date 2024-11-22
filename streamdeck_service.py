@@ -1,42 +1,37 @@
 #!/usr/bin/env python3
 
-#         Python Stream Deck Library
-#      Released under the MIT license
-#
-#   dean [at] fourwalledcubicle [dot] com
-#         www.fourwalledcubicle.com
-#
-
-# Example script showing basic library usage - updating key images with new
-# tiles generated at runtime, and responding to button state change events.
-
 import os
 import threading
 from subprocess import Popen, PIPE
 import time
-
 from PIL import Image
 from StreamDeck.DeviceManager import DeviceManager
 from StreamDeck.ImageHelpers import PILHelper
 
 # Folder location of image assets used by this example.
-ASSETS_PATH = "/home/pi/streamdeck_assets"
+ASSETS_PATH = "/home/pi/angstrom_exploratorium/streamdeck_assets"
 
 # Initial brightness levels
-INITIAL_BRIGHTNESS = 50
-DIM_BRIGHTNESS = 25
-OFF_BRIGHTNESS = 5
+INITIAL_BRIGHTNESS = 70
+DIM_BRIGHTNESS = 40
+OFF_BRIGHTNESS = 1
 
 # Time thresholds
-DIM_TIME = 30  # 30 seconds to dim
+DIM_TIME = 60  # 60 seconds to dim
 OFF_TIME = 5 * 60  # 5 minutes to turn off
 
 # Global variable to track the last interaction time
 last_interaction_time = time.time()
+last_brightness = 0
+
+display_env = os.environ.copy()
+display_env["DISPLAY"] = ":0"
+
+stop_event = threading.Event()
 
 # Updates the current brightness based on the last interaction time
 def update_brightness(deck):
-    global last_interaction_time
+    global last_interaction_time, last_brightness
     current_time = time.time()
     elapsed_time = current_time - last_interaction_time
 
@@ -49,30 +44,61 @@ def update_brightness(deck):
         desired_brightness = INITIAL_BRIGHTNESS
 
     # Set the brightness if it's different from the current one
-    current_brightness = deck.get_brightness()
-    if current_brightness != desired_brightness:
-        deck.set_brightness(desired_brightness)
+    #current_brightness = deck.get_brightness()
+    if last_brightness != desired_brightness:
+        try:
+            deck.set_brightness(desired_brightness)
+            Popen(['xrandr', '--output', 'HDMI-1', '--brightness', str(desired_brightness / INITIAL_BRIGHTNESS)], env=display_env)
+            last_brightness = desired_brightness
+        except Exception as e:
+            print(f"Error updating brightness: {e}")
+            stop_event.set()
 
-# Periodically invoked function to update brightness
 def brightness_maintenance(deck):
-    while True:
-        update_brightness(deck)
-        time.sleep(1)  # Adjust the sleep time as needed
+    while not stop_event.is_set():
+        try:
+            update_brightness(deck)
+        except Exception as e:
+            print(f"Brightness thread error: {e}")
+            stop_event.set()
+        time.sleep(1)
+
+def monitor_mouse_events():
+    global last_interaction_time
+    try:
+        with open("/dev/input/mice", "rb") as fh:
+            while not stop_event.is_set():
+                fh.read(3)
+                last_interaction_time = time.time()
+    except FileNotFoundError:
+        print("Mouse device not found. Ensure `/dev/input/mice` exists.")
+        stop_event.set()
+    except Exception as e:
+        print(f"Mouse monitoring error: {e}")
+        stop_event.set()
 
 def keypress(key):
-    p = Popen(['xte', '-x:0'], stdin=PIPE)
-    p.communicate(input=f"key {key}".encode('ascii'))
+    try:
+        print(key)
+        Popen(['xte', '-x:0'], stdin=PIPE).communicate(input=f"key {key}\n".encode('ascii'))
+        Popen(["xdotool", "click", "1"], env=display_env)
+    except Exception as e:
+        print(f"Key press error: {e}")
+        stop_event.set()
 
-# Returns styling information for a key based on its position and state.
 def set_key_image(deck, key, state):
-    icon_name = os.path.join(ASSETS_PATH, f"icon_{key}.png"),
-    if not os.path.exists(icon_name):
-        icon = PILHelper.create_key_image(deck)
-    else:
-        icon = Image.open(icon_name)
-    image = PILHelper.to_native_key_format(deck, icon)
-    with deck:
-        deck.set_key_image(key, image)
+    icon_name = os.path.join(ASSETS_PATH, f"icon_{key}.png")
+    try:
+        if not os.path.exists(icon_name):
+            icon = PILHelper.create_key_image(deck)
+        else:
+            icon = Image.open(icon_name)
+        image = PILHelper.to_native_key_format(deck, icon)
+        with deck:
+            deck.set_key_image(key, image)
+    except Exception as e:
+        print(f"Error setting key image: {e}")
+        stop_event.set()
 
 # Prints key state change information, updates the key image and performs any
 # associated actions when a key is pressed.
@@ -80,7 +106,7 @@ def key_change_callback(deck, key, state):
     global last_interaction_time
 
     # Print new key state
-    print("Deck {} Key {} = {}".format(deck.id(), key, state), flush=True)
+    #print("Deck {} Key {} = {}".format(deck.id(), key, state), flush=True)
 
     if state:
         # Reset the last interaction time
@@ -94,39 +120,47 @@ def key_change_callback(deck, key, state):
 
 
 if __name__ == "__main__":
-    streamdecks = DeviceManager().enumerate()
+    try:
+        streamdecks = DeviceManager().enumerate()
 
-    print("Found {} Stream Deck(s).\n".format(len(streamdecks)))
+        print("Found {} Stream Deck(s).\n".format(len(streamdecks)))
 
-    for index, deck in enumerate(streamdecks):
-        # This example only works with devices that have screens.
-        if not deck.is_visual():
-            continue
+        for index, deck in enumerate(streamdecks):
+            # This example only works with devices that have screens.
+            if not deck.is_visual():
+                continue
 
-        deck.open()
-        deck.reset()
+            deck.open()
+            deck.reset()
 
-        print("Opened '{}' device (serial number: '{}', fw: '{}')".format(
-            deck.deck_type(), deck.get_serial_number(), deck.get_firmware_version()
-        ))
+            print("Opened '{}' device (serial number: '{}', fw: '{}')".format(
+                deck.deck_type(), deck.get_serial_number(), deck.get_firmware_version()
+            ))
 
-        # Set initial brightness
-        deck.set_brightness(INITIAL_BRIGHTNESS)
+            # Set initial brightness
+            deck.set_brightness(INITIAL_BRIGHTNESS)
 
-        # Set initial key images.
-        for key in range(deck.key_count()):
-            set_key_image(deck, key, False)
+            # Set initial key images.
+            for key in range(deck.key_count()):
+                set_key_image(deck, key, False)
 
-        # Register callback function for when a key state changes.
-        deck.set_key_callback(key_change_callback)
+            # Register callback function for when a key state changes.
+            deck.set_key_callback(key_change_callback)
 
-        # Start separate thread for brightness maintenance
-        threading.Thread(target=brightness_maintenance, args=(deck,), daemon=True).start()
+            # Start separate thread for brightness maintenance
+            threading.Thread(target=brightness_maintenance, args=(deck,), daemon=True).start()
 
-        # Wait until all application threads have terminated (for this example,
-        # this is when all deck handles are closed).
-        for t in threading.enumerate():
-            try:
-                t.join()
-            except RuntimeError:
-                pass
+        # Start separate thread for monitoring mouse events
+        threading.Thread(target=monitor_mouse_events, daemon=True).start()
+
+        while not stop_event.is_set():
+            time.sleep(1)
+
+    except Exception as e:
+        print(f"Main thread error: {e}")
+        stop_event.set()
+
+    finally:
+        for deck in streamdecks:
+            deck.close()
+        print("Program terminated.")
