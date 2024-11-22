@@ -122,14 +122,6 @@ def key_change_callback(deck, key, state):
 
 
 if __name__ == "__main__":
-    xinput_cmd = [
-        "xinput",
-        "set-prop",
-        "Kensington Eagle Trackball Mouse",
-        "Coordinate Transformation Matrix",
-    ] + [str(x) for x in [0, -1.0, 0.0, 1.0, 0, 0.0, 0.0, 0.0, 1.0]]
-    Popen(xinput_cmd, env=display_env)
-    
     try:
         streamdecks = DeviceManager().enumerate()
 

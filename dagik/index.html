@@ -95,7 +95,10 @@
                 // get delta
                 var dx = event.movementX || event.mozMovementX || event.webkitMovementX || 0;
                 var dy = event.movementY || event.mozMovementY || event.webkitMovementY || 0;
-                dow._manual_rotation  = new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(dy, dx, 0),0.01);
+                
+                //dow._manual_rotation  = new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(dy, dx, 0),0.01);
+                // rotate 90 degrees around the x axis
+                dow._manual_rotation  = new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(dx, -dy, 0),0.04);
             }
         });
         setInterval(() => {
