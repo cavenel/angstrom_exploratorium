@@ -9,7 +9,9 @@ from StreamDeck.DeviceManager import DeviceManager
 from StreamDeck.ImageHelpers import PILHelper
 
 # Folder location of image assets used by this example.
-ASSETS_PATH = "/home/pi/angstrom_exploratorium/streamdeck_assets"
+ASSETS_PATH = os.path.join(
+    os.path.dirname(os.path.realpath(__file__)), "streamdeck_assets"
+)
 
 # Initial brightness levels
 INITIAL_BRIGHTNESS = 70
