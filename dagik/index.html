@@ -101,15 +101,6 @@
                 dow._manual_rotation  = new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(dx, -dy, 0),0.04);
             }
         });
-        setInterval(() => {
-          let now = Math.floor(Date.now() / 1000);
-          if (now - timeout_timestamp > 5 && !sleep_mode) {
-            // set opacity of #body to 0
-            document.getElementById("body").classList.remove('show');
-            timeout_timestamp = Math.floor(Date.now() / 1000);
-            sleep_mode = true;
-          }
-        }, 1000);
     </script>
 
 </body>
