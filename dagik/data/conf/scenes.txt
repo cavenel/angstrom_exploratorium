@@ -3,5 +3,6 @@
 02_moon
 03_mars
 04_jupiter
-05_moon_phases
-06_ageGrid
+05_mercury
+06_moon_phases
+07_ageGrid
