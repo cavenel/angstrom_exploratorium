@@ -69,7 +69,7 @@
       // for i in range 0-10:
       for (let i = 0; i < 16; i++) {
         // get alphabet letter from i
-        let letter = String.fromCharCode(65 + i).toLowerCase();
+        let letter = String.fromCharCode(97 + i);
         console.log(letter);
         // dow.gui._call_command("set_image," + i)
         dow["command_set_scene_" + letter] = function () {

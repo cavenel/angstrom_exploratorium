@@ -81,8 +81,10 @@ def monitor_mouse_events():
 
 def keypress(key):
     try:
-        print(key)
-        Popen(['xte', '-x:0'], stdin=PIPE).communicate(input=f"key {key}\n".encode('ascii'))
+        # Get alphabetical letter (1=a, 2=b, etc.)
+        letter = chr(key + 97)
+        print(letter)
+        Popen(['xte', '-x:0'], stdin=PIPE).communicate(input=f"key {letter}\n".encode('ascii'))
         Popen(["xdotool", "click", "1"], env=display_env)
     except Exception as e:
         print(f"Key press error: {e}")
