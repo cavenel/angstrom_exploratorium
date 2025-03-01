@@ -1,4 +1,0 @@
-#TextureName data/images/map/map_
-
-#TextureStart 4
-#TextureEnd 5

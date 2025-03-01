@@ -1,0 +1,5 @@
+#TextureName data/images/jupiter/map_
+
+#TextureStart 0
+#TextureEnd 5
+#spin_angstrom 1

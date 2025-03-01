@@ -1,0 +1,8 @@
+#TextureName data/images/sun_flare/map_
+
+#TextureStart 0
+#TextureEnd 9999
+#Longitude 0.
+#AnimationSpeed 8 :[-30,30]
+#Animation 1 :[0: stop, 1: play, -1: reverse play]
+#spin_angstrom 0

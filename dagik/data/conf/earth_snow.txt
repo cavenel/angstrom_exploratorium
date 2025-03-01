@@ -1,0 +1,10 @@
+#TextureName data/images/earth_snow/map_
+
+#TextureStart 0
+#TextureEnd 9999
+#Latitude 90.0  :[-90,90]
+#StopAt1stMap .0
+#StopAtFinalMap .0
+#AnimationSpeed 4 :[-30,30]
+#Animation 1 :[0: stop, 1: play, -1: reverse play]
+#spin_angstrom 1

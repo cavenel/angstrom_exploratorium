@@ -1,0 +1,5 @@
+#TextureName data/images/neptune/map_
+
+#TextureStart 0
+#TextureEnd 6
+#spin_angstrom 1
