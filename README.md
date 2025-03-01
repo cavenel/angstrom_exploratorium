@@ -7,5 +7,8 @@ A streamdeck is used to control the display, using the Python library [streamdec
 
 To configure the Rapsberry Pi:
 - Install FullPageOS [following the instructions](https://github.com/guysoft/FullPageOS?tab=readme-ov-file#how-to-use-it).
-- From your Raspberry Pi, run the script [`setup_script.sh`](setup_script.sh).
+- From your Raspberry Pi, run the script [`setup_script.sh`](setup_script.sh):
+    ```bash
+    bash <(curl -sSL https://raw.githubusercontent.com/cavenel/angstrom_exploratorium/refs/heads/main/setup_script.sh)
+    ```
 - Reboot the Raspberry Pi.
