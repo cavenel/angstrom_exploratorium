@@ -2,7 +2,6 @@
 
 # Clean existing files if any
 rm -rf /var/www/html/dagik
-rm -rf /home/pi/streamdeck_assets
 rm -f angstrom_exploratorium
 
 # Clone the repository https://github.com/cavenel/angstrom_exploratorium
