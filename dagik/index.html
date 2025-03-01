@@ -27,6 +27,7 @@
 <body class="show" id="body">
     <div id="webgl" style="width: 100%; height: 100%; max-height: 75vw;"></div>
     <script language="javascript">
+      DOW.Config.PARAMETER_DEFINITION["spin_angstrom"] = 1;
       var dow = new DOW.Application( 'webgl', {
         icondir: 'data/js/icons',
         configs: ['data/conf/init_conf.txt', 'data/conf/conf.txt']
@@ -37,6 +38,7 @@
         'LEFT_ARROW': 'left_arrow_key',
         'RIGHT_ARROW': 'right_arrow_key', 
       }
+
       DOW.ICONS = {}
       // Load scenes from data/conf/scenes.txt
       var scene = [];
@@ -64,20 +66,21 @@
       // set timeout_timestamp to now
       var timeout_timestamp = Math.floor(Date.now() / 1000);
       var sleep_mode = false;
-      var last_scene = 0;
       // for i in range 0-10:
-      for (let i = 0; i < 10; i++) {
+      for (let i = 0; i < 16; i++) {
+        // get alphabet letter from i
+        let letter = String.fromCharCode(65 + i).toLowerCase();
+        console.log(letter);
         // dow.gui._call_command("set_image," + i)
-        dow["command_set_scene_" + i] = function () {
+        dow["command_set_scene_" + letter] = function () {
             if (sleep_mode) {
               sleep_mode = false;
               document.getElementById("body").classList.add('show');
             }
-            last_scene = i;
             dow.Run({configs: ['data/conf/init_conf.txt', 'data/conf/conf.txt', 'data/conf/'+scene[i]+'.txt', ]})
             timeout_timestamp = Math.floor(Date.now() / 1000);
         }
-        DOW.KEY_ACTION[i] = "set_scene_" + i
+        DOW.KEY_ACTION[letter] = "set_scene_" + letter
       }
       
       // Get requestPointerLock on any key press, on the html body
@@ -106,12 +109,18 @@
             }
         });
         setInterval (function () {
+          console.log(dow.config.spin_angstrom);
           speed = Math.sqrt(dx * dx + dy * dy);
           speed = 0.999 * speed;
           speed = Math.max(1,Math.min(speed, 50));
           dx = speed * dx / Math.sqrt(dx * dx + dy * dy);
           dy = speed * dy / Math.sqrt(dx * dx + dy * dy);
-          dow._manual_rotation  = new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(dx, -dy, 0),0.01);
+          if (dow.config.spin_angstrom > 0) {
+            dow._manual_rotation  = new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(dx, -dy, 0),0.01);
+          }
+          else {
+            dow._manual_rotation  = new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(0, 0, 0),0.01);
+          }
         }, 10);
     </script>
 
