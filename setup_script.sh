@@ -2,7 +2,7 @@
 
 # Clean existing files if any
 rm -rf /var/www/html/dagik
-rm -f angstrom_exploratorium
+rm -rf angstrom_exploratorium
 
 # Clone the repository https://github.com/cavenel/angstrom_exploratorium
 git clone https://github.com/cavenel/angstrom_exploratorium
