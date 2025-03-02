@@ -29,7 +29,9 @@ cp -r ./dagik /var/www/html/
 
 # Copy fullpageos.txt and splash.png to /boot/
 cp fullpageos.txt /boot/
+cp fullpageos.txt /boot/firmware/
 cp splash.png /boot/
+cp splash.png /boot/firmware/
 
 # Add streamdeck_service.py as a service on boot
 cp streamdeck_service.service /etc/systemd/system/
@@ -37,3 +39,5 @@ chmod 644 /etc/systemd/system/streamdeck_service.service
 systemctl daemon-reload
 systemctl enable streamdeck_service.service
 systemctl start streamdeck_service.service
+
+reboot
