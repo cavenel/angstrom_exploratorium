@@ -97,6 +97,9 @@ def set_key_image(deck, key, state):
             icon = PILHelper.create_key_image(deck)
         else:
             icon = Image.open(icon_name)
+            # Convert icon from RGBA to RGB if necessary
+            if icon.mode == "RGBA":
+                icon = icon.convert("RGB")
         image = PILHelper.to_native_key_format(deck, icon)
         with deck:
             deck.set_key_image(key, image)
