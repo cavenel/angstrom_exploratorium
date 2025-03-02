@@ -19,7 +19,7 @@ EOF
 udevadm trigger
 
 # Install streamdeck with pip
-pip install streamdeck  --break-system-packages --user
+sudo -u pi pip install streamdeck pillow --break-system-packages --user
 
 # Add "xserver-command=X -nocursor" to /usr/share/lightdm/lightdm.conf.d/50-xserver-command.conf
 echo "xserver-command=X -nocursor" >> /usr/share/lightdm/lightdm.conf.d/50-xserver-command.conf
