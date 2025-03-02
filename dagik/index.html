@@ -121,6 +121,12 @@
           else {
             dow._manual_rotation  = new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(0, 0, 0),0.01);
           }
+          if (Math.floor(Date.now() / 1000) - timeout_timestamp > 60) {
+            if (!sleep_mode) {
+              sleep_mode = true;
+              document.getElementById("body").classList.remove('show');
+            }
+          }
         }, 10);
     </script>
 
