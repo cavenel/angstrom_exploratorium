@@ -10,7 +10,7 @@ cd angstrom_exploratorium
 
 # Install dependencies
 
-apt install python3-pip libhidapi-libusb0 libxcb-xinerama0 xautomation
+apt install python3-pip libhidapi-libusb0 libxcb-xinerama0 xautomation -y
 
 echo "Adding udev rules and reloading"
 tee /etc/udev/rules.d/70-streamdeck.rules << EOF
