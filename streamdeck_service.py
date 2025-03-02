@@ -51,6 +51,7 @@ def update_brightness(deck):
         try:
             deck.set_brightness(desired_brightness)
             Popen(['xrandr', '--output', 'HDMI-1', '--brightness', str(desired_brightness / INITIAL_BRIGHTNESS)], env=display_env)
+            Popen(['xrandr', '--output', 'HDMI-2', '--brightness', str(desired_brightness / INITIAL_BRIGHTNESS)], env=display_env)
             last_brightness = desired_brightness
         except Exception as e:
             print(f"Error updating brightness: {e}")
