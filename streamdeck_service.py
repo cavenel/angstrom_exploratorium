@@ -31,6 +31,16 @@ display_env["DISPLAY"] = ":0"
 
 stop_event = threading.Event()
 
+# Restarts fullpageos every 1 hour
+def restart_fullpageos():
+    while not stop_event.is_set():
+        try:
+            time.sleep(3600)
+            Popen(["/home/pi/scripts/reload_fullpageos_txt"])
+        except Exception as e:
+            print(f"Error restarting fullpageos: {e}")
+            stop_event.set()
+
 # Updates the current brightness based on the last interaction time
 def update_brightness(deck):
     global last_interaction_time, last_brightness
@@ -160,6 +170,9 @@ if __name__ == "__main__":
 
         # Start separate thread for monitoring mouse events
         threading.Thread(target=monitor_mouse_events, daemon=True).start()
+
+        # Start separate thread for restarting fullpageos every 1 hour
+        threading.Thread(target=restart_fullpageos, daemon=True).start()
 
         while not stop_event.is_set():
             time.sleep(1)

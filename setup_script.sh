@@ -32,6 +32,7 @@ cp fullpageos.txt /boot/
 cp fullpageos.txt /boot/firmware/
 cp splash.png /boot/
 cp splash.png /boot/firmware/
+cp splash.png /opt/custompios/background.png
 
 # Add streamdeck_service.py as a service on boot
 cp streamdeck_service.service /etc/systemd/system/
