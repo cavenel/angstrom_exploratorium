@@ -42,19 +42,19 @@
       DOW.ICONS = {}
       // Load scenes from data/conf/scenes.txt
       var scene = [];
-      var scene_file = new XMLHttpRequest();
+      let scene_file = new XMLHttpRequest();
       scene_file.open("GET", "data/conf/scenes.txt", false);
       scene_file.onreadystatechange = function () {
         if (scene_file.readyState === 4) {
           if (scene_file.status === 200 || scene_file.status == 0) {
-            var allText = scene_file.responseText;
+            let allText = scene_file.responseText;
             scene = allText.split("\n");
             // tream all the scenes
             scene = scene.map(function (x) {
               return x.trim();
             });
             setTimeout(
-              () => dow.Run({configs: ['data/conf/init_conf.txt', 'data/conf/conf.txt', 'data/conf/'+scene[0]+'.txt', ]}), 
+              () => dow.Run({configs: ['data/conf/init_conf.txt', 'data/conf/conf.txt', 'data/conf/'+scene[3]+'.txt', ]}), 
               500
             );
           }
@@ -73,61 +73,70 @@
         console.log(letter);
         // dow.gui._call_command("set_image," + i)
         dow["command_set_scene_" + letter] = function () {
+            timeout_timestamp = Math.floor(Date.now() / 1000);
             if (sleep_mode) {
               sleep_mode = false;
               document.getElementById("body").classList.add('show');
             }
             dow.Run({configs: ['data/conf/init_conf.txt', 'data/conf/conf.txt', 'data/conf/'+scene[i]+'.txt', ]})
-            timeout_timestamp = Math.floor(Date.now() / 1000);
         }
         DOW.KEY_ACTION[letter] = "set_scene_" + letter
       }
       
       // Get requestPointerLock on any key press, on the html body
-        document.body.addEventListener('keydown', function (event) {
-            document.body.requestPointerLock();
-        });
-        var dx = 0;
-        var dy = 1;
-        // set mouse move
-        document.addEventListener('mousemove', function (event) {
-            timeout_timestamp = Math.floor(Date.now() / 1000);
-            if (sleep_mode) {
-              sleep_mode = false;
-              document.getElementById("body").classList.add('show');              
-            }
-            if (document.pointerLockElement === document.body) {
-                // get delta
-                let _dx = event.movementX || event.mozMovementX || event.webkitMovementX || 0;
-                let _dy = event.movementY || event.mozMovementY || event.webkitMovementY || 0;
-                // get mean of (dx,dy) and (_dx,_dy)
-                dx = (dx * 0.99 + _dx * 0.01);
-                dy = (dy * 0.99 + _dy * 0.01);
+      document.body.addEventListener('keydown', function (event) {
+          document.body.requestPointerLock();
+      });
+      var dx = 0;
+      var dy = 1;
+      // set mouse move
+      document.addEventListener('mousemove', function (event) {
+          timeout_timestamp = Math.floor(Date.now() / 1000);
+          if (sleep_mode) {
+            sleep_mode = false;
+            document.getElementById("body").classList.add('show');              
+          }
+          if (document.pointerLockElement === document.body) {
+              // get delta
+              let _dx = event.movementX || event.mozMovementX || event.webkitMovementX || 0;
+              let _dy = event.movementY || event.mozMovementY || event.webkitMovementY || 0;
+              // get mean of (dx,dy) and (_dx,_dy)
+              dx = (dx * 0.99 + _dx * 0.01);
+              dy = (dy * 0.99 + _dy * 0.01);
 
-                //dow._manual_rotation  = new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(dy, dx, 0),0.01);
-                // rotate 90 degrees around the x axis
-            }
-        });
-        setInterval (function () {
-          console.log(dow.config.spin_angstrom);
-          speed = Math.sqrt(dx * dx + dy * dy);
-          speed = 0.999 * speed;
-          speed = Math.max(1,Math.min(speed, 50));
-          dx = speed * dx / Math.sqrt(dx * dx + dy * dy);
-          dy = speed * dy / Math.sqrt(dx * dx + dy * dy);
-          if (dow.config.spin_angstrom > 0) {
-            dow._manual_rotation  = new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(dx, -dy, 0),0.01);
+              //dow._manual_rotation  = new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(dy, dx, 0),0.01);
+              // rotate 90 degrees around the x axis
           }
-          else {
-            dow._manual_rotation  = new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(0, 0, 0),0.01);
+      });
+      function animationCallback (timestamp) {
+        if (Math.floor(Date.now() / 1000) - timeout_timestamp > 60) {
+          if (!sleep_mode) {
+            sleep_mode = true;
+            document.getElementById("body").classList.remove('show');
           }
-          if (Math.floor(Date.now() / 1000) - timeout_timestamp > 60) {
-            if (!sleep_mode) {
-              sleep_mode = true;
-              document.getElementById("body").classList.remove('show');
-            }
-          }
-        }, 10);
+        }
+        speed = Math.sqrt(dx * dx + dy * dy);
+        speed = 0.999 * speed;
+        speed = Math.max(1,Math.min(speed, 50));
+        dx = speed * dx / Math.sqrt(dx * dx + dy * dy);
+        dy = speed * dy / Math.sqrt(dx * dx + dy * dy);
+        if (dow.config.spin_angstrom > 0) {
+          dow._manual_rotation  = new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(dx, -dy, 0),0.01);
+        }
+        else {
+          dow._manual_rotation  = new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(0, 0, 0),0.01);
+        }
+        
+        if (sleep_mode) {
+          setTimeout(() => {
+            requestAnimationFrame((t) => animationCallback(t));
+          }, 200);
+        }
+        else {
+          requestAnimationFrame((t) => animationCallback(t));
+        }
+      };
+      requestAnimationFrame((t) => animationCallback(t));
     </script>
 
 </body>
