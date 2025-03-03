@@ -40,6 +40,16 @@
       }
 
       DOW.ICONS = {}
+
+      // Load scene number from url if present
+      var url = new URL(window.location.href);
+      var scene_number = url.searchParams.get("scene");
+      if (scene_number) {
+        scene_number = parseInt(scene_number);
+      }
+      else {
+        scene_number = 3;
+      }
       // Load scenes from data/conf/scenes.txt
       var scene = [];
       let scene_file = new XMLHttpRequest();
@@ -54,7 +64,7 @@
               return x.trim();
             });
             setTimeout(
-              () => dow.Run({configs: ['data/conf/init_conf.txt', 'data/conf/conf.txt', 'data/conf/'+scene[3]+'.txt', ]}), 
+              () => dow.Run({configs: ['data/conf/init_conf.txt', 'data/conf/conf.txt', 'data/conf/'+scene[scene_number]+'.txt', ]}), 
               500
             );
           }
@@ -66,6 +76,7 @@
       // set timeout_timestamp to now
       var timeout_timestamp = Math.floor(Date.now() / 1000);
       var sleep_mode = false;
+      var scene_change = 0;
       // for i in range 0-10:
       for (let i = 0; i < 16; i++) {
         // get alphabet letter from i
@@ -78,7 +89,14 @@
               sleep_mode = false;
               document.getElementById("body").classList.add('show');
             }
-            dow.Run({configs: ['data/conf/init_conf.txt', 'data/conf/conf.txt', 'data/conf/'+scene[i]+'.txt', ]})
+            scene_change += 1;
+            if (scene_change % 20 == 0) {
+              // Refresh page with ?scene=i:
+              window.location = window.location.href.split('?')[0] + '?scene=' + i;
+            }
+            else {
+              dow.Run({configs: ['data/conf/init_conf.txt', 'data/conf/conf.txt', 'data/conf/'+scene[i]+'.txt', ]})
+            }
         }
         DOW.KEY_ACTION[letter] = "set_scene_" + letter
       }
