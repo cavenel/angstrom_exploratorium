@@ -25,6 +25,11 @@ sudo pip install streamdeck pillow --break-system-packages
 # Add "xserver-command=X -nocursor" to /usr/share/lightdm/lightdm.conf.d/50-xserver-command.conf
 echo "xserver-command=X -nocursor" >> /usr/share/lightdm/lightdm.conf.d/50-xserver-command.conf
 
+# Update /etc/chromium.d/00-rpi-vars
+tee /etc/chromium.d/00-rpi-vars << EOF
+export CHROMIUM_FLAGS="$CHROMIUM_FLAGS --disable-gpu-compositing --disable-accelerated-2d-canvas --disable-accelerated-video-decode --disable-background-timer-throttling --disable-backgrounding-occluded-windows --disable-checker-imaging --disable-smooth-scrolling --process-per-site --enable-low-end-device-mode"
+EOF
+
 # Copy ./dagik folder to /var/www/html/dagik
 cp -r ./dagik /var/www/html/
 
