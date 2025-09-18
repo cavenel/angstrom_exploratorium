@@ -25,6 +25,7 @@ OFF_TIME = 5 * 60  # 5 minutes to turn off
 # Global variable to track the last interaction time
 last_interaction_time = time.time()
 last_brightness = 0
+last_automatic_image = -1
 
 display_env = os.environ.copy()
 display_env["DISPLAY"] = ":0"
@@ -41,6 +42,33 @@ def restart_fullpageos():
             print(f"Error restarting fullpageos: {e}")
             stop_event.set()
 
+def set_automatic_image():
+    global last_automatic_image
+    # Each day will get an automatic image:
+    # Monday from 08-11 -> 0, 11-14 -> 1, 14-18 -> 2
+    # Tuesday from 08-11 -> 3, 11-14 -> 4, 14-18 -> 5
+    # Wednesday from 08-11 -> 6, 11-14 -> 7, 14-18 -> 8
+    # Thursday from 08-11 -> 9, 11-14 -> 10, 14-18 -> 11
+    # Friday from 08-11 -> 12, 11-14 -> 13, 14-18 -> 14
+    # Rest of the time -> 0
+
+    current_time = time.localtime()
+    day = current_time.tm_wday  # Monday is 0 and Sunday is 6
+    hour = current_time.tm_hour # 0-23
+    automatic_image = 0
+    if day < 5:  # Monday to Friday
+        if 8 <= hour < 11:
+            automatic_image = day * 3 + 0
+        elif 11 <= hour < 14:
+            automatic_image = day * 3 + 1
+        elif 14 <= hour < 18:
+            automatic_image = day * 3 + 2   
+    else:
+        automatic_image = 0
+    if automatic_image != last_automatic_image:
+        last_automatic_image = automatic_image
+        keypress(automatic_image)
+
 # Updates the current brightness based on the last interaction time
 def update_brightness(deck):
     global last_interaction_time, last_brightness
@@ -51,6 +79,7 @@ def update_brightness(deck):
     if elapsed_time >= OFF_TIME:
         desired_brightness = OFF_BRIGHTNESS
     elif elapsed_time >= DIM_TIME:
+        set_automatic_image()
         desired_brightness = DIM_BRIGHTNESS
     else:
         desired_brightness = INITIAL_BRIGHTNESS
