@@ -20,7 +20,7 @@ OFF_BRIGHTNESS = 1
 
 # Time thresholds
 DIM_TIME = 60  # 60 seconds to dim
-OFF_TIME = 5 * 60  # 5 minutes to turn off
+OFF_TIME = None #5 * 60  # 5 minutes to turn off
 
 # Global variable to track the last interaction time
 last_interaction_time = time.time()
@@ -76,7 +76,7 @@ def update_brightness(deck):
     elapsed_time = current_time - last_interaction_time
 
     # Determine the desired brightness based on elapsed time
-    if elapsed_time >= OFF_TIME:
+    if OFF_TIME is not None and elapsed_time >= OFF_TIME:
         desired_brightness = OFF_BRIGHTNESS
     elif elapsed_time >= DIM_TIME:
         set_automatic_image()
