@@ -9,7 +9,7 @@ git clone https://github.com/cavenel/angstrom_exploratorium
 cd angstrom_exploratorium
 
 # Install dependencies
-
+apt update
 apt install python3-pip libhidapi-libusb0 libxcb-xinerama0 xautomation -y
 
 echo "Adding udev rules and reloading"
@@ -20,6 +20,7 @@ udevadm trigger
 
 # Install streamdeck with pip
 sudo -u pi pip install streamdeck pillow --break-system-packages --user
+sudo pip install streamdeck pillow --break-system-packages
 
 # Add "xserver-command=X -nocursor" to /usr/share/lightdm/lightdm.conf.d/50-xserver-command.conf
 echo "xserver-command=X -nocursor" >> /usr/share/lightdm/lightdm.conf.d/50-xserver-command.conf
