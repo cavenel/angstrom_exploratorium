@@ -74,8 +74,10 @@
 
       //dow.Run();
       // set timeout_timestamp to now
+      /*
       var timeout_timestamp = Math.floor(Date.now() / 1000);
       var sleep_mode = false;
+      */
       var scene_change = 0;
       // for i in range 0-10:
       for (let i = 0; i < 16; i++) {
@@ -84,11 +86,11 @@
         console.log(letter);
         // dow.gui._call_command("set_image," + i)
         dow["command_set_scene_" + letter] = function () {
-            timeout_timestamp = Math.floor(Date.now() / 1000);
+            /*timeout_timestamp = Math.floor(Date.now() / 1000);
             if (sleep_mode) {
               sleep_mode = false;
               document.getElementById("body").classList.add('show');
-            }
+            }*/
             scene_change += 1;
             if (scene_change % 50 == 0) {
               // Refresh page with ?scene=i:
@@ -109,11 +111,11 @@
       var dy = 1;
       // set mouse move
       document.addEventListener('mousemove', function (event) {
-          timeout_timestamp = Math.floor(Date.now() / 1000);
+          /*timeout_timestamp = Math.floor(Date.now() / 1000);
           if (sleep_mode) {
             sleep_mode = false;
             document.getElementById("body").classList.add('show');              
-          }
+          }*/
           if (document.pointerLockElement === document.body) {
               // get delta
               let _dx = event.movementX || event.mozMovementX || event.webkitMovementX || 0;
@@ -127,12 +129,12 @@
           }
       });
       function animationCallback (timestamp) {
-        if (Math.floor(Date.now() / 1000) - timeout_timestamp > 60) {
+        /*if (Math.floor(Date.now() / 1000) - timeout_timestamp > 60) {
           if (!sleep_mode) {
             sleep_mode = true;
             document.getElementById("body").classList.remove('show');
           }
-        }
+        }*/
         speed = Math.sqrt(dx * dx + dy * dy);
         speed = 0.999 * speed;
         speed = Math.max(1,Math.min(speed, 50));
@@ -144,7 +146,7 @@
         else {
           dow._manual_rotation  = new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(0, 0, 0),0.01);
         }
-        
+        /*
         if (sleep_mode) {
           setTimeout(() => {
             requestAnimationFrame((t) => animationCallback(t));
@@ -153,6 +155,8 @@
         else {
           requestAnimationFrame((t) => animationCallback(t));
         }
+        */
+        requestAnimationFrame((t) => animationCallback(t));
       };
       requestAnimationFrame((t) => animationCallback(t));
     </script>
