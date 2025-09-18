@@ -1,9 +1,10 @@
 sun_flare
 mercury
 venus
-earth_snow
+earth_clouds
 earth_city_lights
-earth_earth_quakes
+earth_surface
+earth_wind
 aurora
 moon_waning
 mars
@@ -11,5 +12,4 @@ jupiter
 saturn
 uranus
 neptune
-pluto
-stars
+galaxy

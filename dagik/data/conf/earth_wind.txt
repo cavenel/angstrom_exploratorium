@@ -1,0 +1,11 @@
+#TextureName data/images/earth_wind/map_
+
+#TextureStart 0
+#TextureEnd 9999
+#Latitude 10.0  :[-90,90]
+#Longitude 0.0 :[-180,180]
+#Animation 1 :[0: stop, 1: play, -1: reverse play]
+#AnimationSpeed 8 :[-30,30]
+#StopAt1stMap 0.5
+#StopAtFinalMap 0.2
+#spin_angstrom 1
